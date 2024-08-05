@@ -1,4 +1,10 @@
 local teleportLocations = {
+    Vector3.new(124, 11,  78),
+    Vector3.new(124, 11,  76),
+Vector3.new(124, 11,  27),
+Vector3.new(124, 11,  29),
+Vector3.new(124, 11,  28),
+Vector3.new(124, 11,  30),
 Vector3.new(124, 9, 95),
 Vector3.new(78, 9, 142),
 Vector3.new(74, 9, 145),
@@ -148,6 +154,10 @@ Vector3.new(124, 9, 21),
 Vector3.new(124, 9, 23),
 Vector3.new(124, 9, 25),
 Vector3.new(124, 9, 27),
+Vector3.new(124, 11,  27),
+Vector3.new(124, 11,  29),
+Vector3.new(124, 11,  28),
+Vector3.new(124, 11,  30),
 Vector3.new(124, 9, 29),
 Vector3.new(124, 9, 31),
 Vector3.new(124, 9, 33),
@@ -275,114 +285,6 @@ Vector3.new(5, 9, 145),
 Vector3.new(4, 9, 145),
 Vector3.new(3, 9, 145),
 }
--- start
---start
-local TweenService = game:GetService("TweenService")
-
-local function createRoundedElement(elementType, properties, cornerRadius)
-    local element = Instance.new(elementType)
-    for prop, value in pairs(properties) do
-        element[prop] = value
-    end
-    element.BorderSizePixel = 0
-    element.BackgroundColor3 = properties.BackgroundColor3 or Color3.fromRGB(40, 40, 40)
-    element.BorderColor3 = properties.BorderColor3 or Color3.fromRGB(60, 60, 60)
-    element.Parent = properties.Parent
-    local uiCorner = Instance.new("UICorner")
-    uiCorner.CornerRadius = cornerRadius
-    uiCorner.Parent = element
-    if properties.BorderColor3 then
-        local uiStroke = Instance.new("UIStroke")
-        uiStroke.Color = properties.BorderColor3
-        uiStroke.Thickness = 1
-        uiStroke.Parent = element
-    end
-
-    local uiShadow = Instance.new("UIStroke")
-    uiShadow.Color = Color3.fromRGB(0, 0, 0)
-    uiShadow.Thickness = 8
-    uiShadow.Transparency = 0.8
-    uiShadow.Parent = element
-
-    return element
-end
-
-local player = game.Players.LocalPlayer
-local screenGui = Instance.new("ScreenGui")
-screenGui.Name = "TeleportUI"
-screenGui.Parent = player.PlayerGui
-
-local frame = createRoundedElement("Frame", {
-    Size = UDim2.new(0.3, 0, 0.4, 0),
-    Position = UDim2.new(0.35, 0, 0.3, 0),
-    BackgroundColor3 = Color3.fromRGB(30, 30, 30),
-    BorderColor3 = Color3.fromRGB(50, 50, 50),
-    Parent = screenGui,
-    ClipsDescendants = true
-}, UDim.new(0.1, 0))
--- title
---title
-local title = createRoundedElement("TextLabel", {
-    Size = UDim2.new(1, 0, 0.15, 0),
-    Position = UDim2.new(0, 0, 0, 0),
-    Text = "Mod Menu v3",
-    TextColor3 = Color3.fromRGB(255, 255, 255),
-    TextScaled = true,
-    BackgroundTransparency = 1,
-    Font = Enum.Font.GothamBold,
-    Parent = frame
-}, UDim.new(0, 0))
-
-local credit = createRoundedElement("TextLabel", {
-    Size = UDim2.new(1, 0, 0.05, 0),
-    Position = UDim2.new(0, 0, 0.15, 0),
-    Text = "made by smores (smoresxo)",
-    TextColor3 = Color3.fromRGB(150, 150, 150),
-    TextScaled = true,
-    BackgroundTransparency = 1,
-    Font = Enum.Font.Gotham,
-    Parent = frame
-}, UDim.new(0, 0))
-
-local closeButton = createRoundedElement("TextButton", {
-    Size = UDim2.new(0.08, 0, 0.08, 0),
-    Position = UDim2.new(0.88, 0, 0.02, 0),
-    Text = "X",
-    TextColor3 = Color3.fromRGB(255, 255, 255),
-    TextScaled = true,
-    BackgroundColor3 = Color3.fromRGB(0, 0, 0),
-    BorderColor3 = Color3.fromRGB(0, 0, 0),
-    Font = Enum.Font.GothamBold,
-    Parent = frame
-}, UDim.new(0.5, 0))
-local fillMapButton = createRoundedElement("TextButton", {
-    Size = UDim2.new(0.8, 0, 0.12, 0),
-    Position = UDim2.new(0.1, 0, 0.55, 0),
-    Text = "Start Filling Map (2x Slower but Accurate)",
-    TextColor3 = Color3.fromRGB(255, 255, 255),
-    TextScaled = true,
-    BackgroundColor3 = Color3.fromRGB(100, 100, 100),
-    BorderColor3 = Color3.fromRGB(160, 160, 160),
-    Font = Enum.Font.GothamBold,
-    Parent = frame
-}, UDim.new(0.25, 0))
-
-local startButton = createRoundedElement("TextButton", {
-    Size = UDim2.new(0.8, 0, 0.12, 0),
-    Position = UDim2.new(0.1, 0, 0.75, 0),
-    Text = "Enable Overdrive Mode",
-    TextColor3 = Color3.fromRGB(255, 255, 255),
-    TextScaled = true,
-    BackgroundColor3 = Color3.fromRGB(0, 150, 0),
-    BorderColor3 = Color3.fromRGB(0, 255, 0),
-    Font = Enum.Font.GothamBold,
-    Parent = frame
-}, UDim.new(0.25, 0))
-
-local teleporting = false
-local teleportLoop
-local fillingMap = false
-local fillMapLoop
 local fillMapPositions = {
 Vector3.new(4, 11,  145),
 Vector3.new(4, 11,  144),
@@ -909,6 +811,187 @@ Vector3.new(6, 11,  145),
 Vector3.new(5, 11,  145),
 Vector3.new(4, 11,  145),
 }
+-- start
+--start
+local TweenService = game:GetService("TweenService")
+
+local function createRoundedElement(elementType, properties, cornerRadius)
+    local element = Instance.new(elementType)
+    for prop, value in pairs(properties) do
+        element[prop] = value
+    end
+    element.BorderSizePixel = 0
+    element.BackgroundColor3 = properties.BackgroundColor3 or Color3.fromRGB(40, 40, 40)
+    element.BorderColor3 = properties.BorderColor3 or Color3.fromRGB(60, 60, 60)
+    element.Parent = properties.Parent
+    local uiCorner = Instance.new("UICorner")
+    uiCorner.CornerRadius = cornerRadius
+    uiCorner.Parent = element
+    if properties.BorderColor3 then
+        local uiStroke = Instance.new("UIStroke")
+        uiStroke.Color = properties.BorderColor3
+        uiStroke.Thickness = 1
+        uiStroke.Parent = element
+    end
+
+    local uiShadow = Instance.new("UIStroke")
+    uiShadow.Color = Color3.fromRGB(0, 0, 0)
+    uiShadow.Thickness = 8
+    uiShadow.Transparency = 0.8
+    uiShadow.Parent = element
+
+    return element
+end
+
+local player = game.Players.LocalPlayer
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "TeleportUI"
+screenGui.Parent = player.PlayerGui
+
+local frame = createRoundedElement("Frame", {
+    Size = UDim2.new(0.3, 0, 0.4, 0),
+    Position = UDim2.new(0.35, 0, 0.3, 0),
+    BackgroundColor3 = Color3.fromRGB(30, 30, 30),
+    BorderColor3 = Color3.fromRGB(50, 50, 50),
+    Parent = screenGui,
+    ClipsDescendants = true
+}, UDim.new(0.1, 0))
+
+local title = createRoundedElement("TextLabel", {
+    Size = UDim2.new(1, 0, 0.15, 0),
+    Position = UDim2.new(0, 0, 0, 0),
+    Text = "Mod Menu v6",
+    TextColor3 = Color3.fromRGB(255, 255, 255),
+    TextScaled = true,
+    BackgroundTransparency = 1,
+    Font = Enum.Font.GothamBold,
+    Parent = frame
+}, UDim.new(0, 0))
+
+local credit = createRoundedElement("TextLabel", {
+    Size = UDim2.new(1, 0, 0.05, 0),
+    Position = UDim2.new(0, 0, 0.15, 0),
+    Text = "made by smores (smoresxo)",
+    TextColor3 = Color3.fromRGB(150, 150, 150),
+    TextScaled = true,
+    BackgroundTransparency = 1,
+    Font = Enum.Font.Gotham,
+    Parent = frame
+}, UDim.new(0, 0))
+local closeButton = createRoundedElement("TextButton", {
+    Size = UDim2.new(0.08, 0, 0.08, 0),
+    Position = UDim2.new(0.88, 0, 0.02, 0),
+    Text = "X",
+    TextColor3 = Color3.fromRGB(255, 255, 255),
+    TextScaled = true,
+    BackgroundColor3 = Color3.fromRGB(0, 0, 0),
+    BorderColor3 = Color3.fromRGB(0, 0, 0),
+    Font = Enum.Font.GothamBold,
+    Parent = frame
+}, UDim.new(0.5, 0))
+local fillMapButton = createRoundedElement("TextButton", {
+    Size = UDim2.new(0.8, 0, 0.12, 0),
+    Position = UDim2.new(0.1, 0, 0.55, 0),
+    Text = "Start Filling Map (2x Slower but Accurate)",
+    TextColor3 = Color3.fromRGB(255, 255, 255),
+    TextScaled = true,
+    BackgroundColor3 = Color3.fromRGB(100, 100, 100),
+    BorderColor3 = Color3.fromRGB(160, 160, 160),
+    Font = Enum.Font.GothamBold,
+    Parent = frame
+}, UDim.new(0.25, 0))
+local startButton = createRoundedElement("TextButton", {
+    Size = UDim2.new(0.8, 0, 0.12, 0),
+    Position = UDim2.new(0.1, 0, 0.75, 0),
+    Text = "Enable Overdrive Mode",
+    TextColor3 = Color3.fromRGB(255, 255, 255),
+    TextScaled = true,
+    BackgroundColor3 = Color3.fromRGB(0, 150, 0),
+    BorderColor3 = Color3.fromRGB(0, 255, 0),
+    Font = Enum.Font.GothamBold,
+    Parent = frame
+}, UDim.new(0.25, 0))
+
+local infJumpButton = createRoundedElement("TextButton", {
+    Size = UDim2.new(0.8, 0, 0.12, 0),
+    Position = UDim2.new(0.1, 0, 0.21, 0),
+    Text = "Enable Inf Jump",
+    TextColor3 = Color3.fromRGB(255, 255, 255),
+    TextScaled = true,
+    BackgroundColor3 = Color3.fromRGB(100, 100, 100),
+    BorderColor3 = Color3.fromRGB(160, 160, 160),
+    Font = Enum.Font.GothamBold,
+    Parent = frame
+}, UDim.new(0.25, 0))
+
+local walkSpeedButton = createRoundedElement("TextButton", {
+    Size = UDim2.new(0.8, 0, 0.12, 0),
+    Position = UDim2.new(0.1, 0, 0.35, 0),
+    Text = "Enable Speed Boost",
+    TextColor3 = Color3.fromRGB(255, 255, 255),
+    TextScaled = true,
+    BackgroundColor3 = Color3.fromRGB(100, 100, 100),
+    BorderColor3 = Color3.fromRGB(160, 160, 160),
+    Font = Enum.Font.GothamBold,
+    Parent = frame
+}, UDim.new(0.25, 0))
+
+local teleporting = false
+local teleportLoop
+local fillingMap = false
+local fillMapLoop
+local speedBoost = false
+local infJump = false
+
+local function toggleInfJump()
+    local userInputService = game:GetService("UserInputService")
+    local isJumping = false
+
+    local function onJumpRequest()
+        if infJump and userInputService:IsKeyDown(Enum.KeyCode.Space) then
+            if not isJumping then
+                isJumping = true
+                while userInputService:IsKeyDown(Enum.KeyCode.Space) do
+                    player.Character:FindFirstChildOfClass('Humanoid'):ChangeState(Enum.HumanoidStateType.Jumping)
+                    wait(0.1)
+                end
+                isJumping = false
+            end
+        end
+    end
+
+    userInputService.JumpRequest:Connect(onJumpRequest)
+
+    if infJump then
+        infJumpButton.Text = "Disable Inf Jump"
+        infJumpButton.BackgroundColor3 = Color3.fromRGB(150, 0, 0)
+        infJumpButton.BorderColor3 = Color3.fromRGB(255, 0, 0)
+    else
+        infJumpButton.Text = "Enable Inf Jump"
+        infJumpButton.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+        infJumpButton.BorderColor3 = Color3.fromRGB(160, 160, 160)
+    end
+end
+-- speed
+local function toggleWalkSpeed()
+    local player = game.Players.LocalPlayer
+    local character = player.Character or player.CharacterAdded:Wait()
+    local humanoid = character:WaitForChild("Humanoid")
+
+    if speedBoost then
+        humanoid.WalkSpeed = 16
+        walkSpeedButton.Text = "Enable Speed Boost"
+        walkSpeedButton.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+        walkSpeedButton.BorderColor3 = Color3.fromRGB(160, 160, 160)
+    else
+        humanoid.WalkSpeed = 200
+        walkSpeedButton.Text = "Disable Speed Boost"
+        walkSpeedButton.BackgroundColor3 = Color3.fromRGB(150, 0, 0)
+        walkSpeedButton.BorderColor3 = Color3.fromRGB(255, 0, 0)
+    end
+
+    speedBoost = not speedBoost
+end
 
 local function startTeleportSequence()
     local player = game.Players.LocalPlayer
@@ -927,6 +1010,7 @@ local function startTeleportSequence()
 
     teleportLoop()
 end
+
 local function startFillMapSequence()
     local player = game.Players.LocalPlayer
     local character = player.Character or player.CharacterAdded:Wait()
@@ -1011,6 +1095,22 @@ fillMapButton.MouseLeave:Connect(function()
     animateButton(fillMapButton, 1 / 1.1, 0.2)
 end)
 
+walkSpeedButton.MouseEnter:Connect(function()
+    animateButton(walkSpeedButton, 1.1, 0.2)
+end)
+
+walkSpeedButton.MouseLeave:Connect(function()
+    animateButton(walkSpeedButton, 1 / 1.1, 0.2)
+end)
+
+infJumpButton.MouseEnter:Connect(function()
+    animateButton(infJumpButton, 1.1, 0.2)
+end)
+
+infJumpButton.MouseLeave:Connect(function()
+    animateButton(infJumpButton, 1 / 1.1, 0.2)
+end)
+
 closeButton.MouseButton1Click:Connect(function()
     screenGui:Destroy()
 end)
@@ -1029,6 +1129,7 @@ startButton.MouseButton1Click:Connect(function()
         startTeleportSequence()
     end
 end)
+
 fillMapButton.MouseButton1Click:Connect(function()
     if fillingMap then
         fillingMap = false
@@ -1044,5 +1145,15 @@ fillMapButton.MouseButton1Click:Connect(function()
     end
 end)
 
--- no roblox anti cheat <3
-setfflag("AbuseReportScreenshot", "False"); setfflag("AbuseReportScreenshotPercentage", "0");
+walkSpeedButton.MouseButton1Click:Connect(function()
+    toggleWalkSpeed()
+end)
+
+infJumpButton.MouseButton1Click:Connect(function()
+    infJump = not infJump
+    toggleInfJump()
+end)
+
+-- no Roblox anti-cheat <3
+setfflag("AbuseReportScreenshot", "False");
+setfflag("AbuseReportScreenshotPercentage", "0");
