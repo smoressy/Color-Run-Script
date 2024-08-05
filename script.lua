@@ -1,7 +1,5 @@
 local teleportLocations = {
 Vector3.new(124, 7, 95),
-Vector3.new(124, 7, 95),
-Vector3.new(124, 7, 95),
 Vector3.new(78, 7, 142),
 Vector3.new(74, 7, 145),
 Vector3.new(82, 7, 145),
@@ -185,7 +183,6 @@ Vector3.new(124, 7, 91),
 Vector3.new(124, 7, 93),
 Vector3.new(124, 7, 94),
 Vector3.new(124, 7, 95),
-Vector3.new(124, 7, 95.5),
 Vector3.new(124, 7, 96),
 Vector3.new(124, 7, 97),
 Vector3.new(124, 7, 98),
@@ -278,6 +275,7 @@ Vector3.new(5, 7, 145),
 Vector3.new(4, 7, 145),
 Vector3.new(3, 7, 145),
 }
+
 local TweenService = game:GetService("TweenService")
 
 local function createRoundedElement(elementType, properties, cornerRadius)
@@ -286,8 +284,8 @@ local function createRoundedElement(elementType, properties, cornerRadius)
         element[prop] = value
     end
     element.BorderSizePixel = 0
-    element.BackgroundColor3 = properties.BackgroundColor3 or Color3.fromRGB(50, 50, 50)
-    element.BorderColor3 = properties.BorderColor3 or Color3.fromRGB(0, 0, 0)
+    element.BackgroundColor3 = properties.BackgroundColor3 or Color3.fromRGB(40, 40, 40)
+    element.BorderColor3 = properties.BorderColor3 or Color3.fromRGB(60, 60, 60)
     element.Parent = properties.Parent
     local uiCorner = Instance.new("UICorner")
     uiCorner.CornerRadius = cornerRadius
@@ -295,12 +293,19 @@ local function createRoundedElement(elementType, properties, cornerRadius)
     if properties.BorderColor3 then
         local uiStroke = Instance.new("UIStroke")
         uiStroke.Color = properties.BorderColor3
-        uiStroke.Thickness = 2
+        uiStroke.Thickness = 1
         uiStroke.Parent = element
     end
 
+    local uiShadow = Instance.new("UIStroke")
+    uiShadow.Color = Color3.fromRGB(0, 0, 0)
+    uiShadow.Thickness = 8
+    uiShadow.Transparency = 0.8
+    uiShadow.Parent = element
+
     return element
 end
+
 local player = game.Players.LocalPlayer
 local screenGui = Instance.new("ScreenGui")
 screenGui.Name = "TeleportUI"
@@ -310,18 +315,30 @@ local frame = createRoundedElement("Frame", {
     Size = UDim2.new(0.3, 0, 0.4, 0),
     Position = UDim2.new(0.35, 0, 0.3, 0),
     BackgroundColor3 = Color3.fromRGB(30, 30, 30),
-    BorderColor3 = Color3.fromRGB(100, 100, 100),
+    BorderColor3 = Color3.fromRGB(50, 50, 50),
     Parent = screenGui,
     ClipsDescendants = true
 }, UDim.new(0.1, 0))
 
 local title = createRoundedElement("TextLabel", {
-    Size = UDim2.new(1, 0, 0.2, 0),
+    Size = UDim2.new(1, 0, 0.15, 0),
     Position = UDim2.new(0, 0, 0, 0),
     Text = "Mod Menu",
     TextColor3 = Color3.fromRGB(255, 255, 255),
     TextScaled = true,
     BackgroundTransparency = 1,
+    Font = Enum.Font.GothamBold,
+    Parent = frame
+}, UDim.new(0, 0))
+
+local credit = createRoundedElement("TextLabel", {
+    Size = UDim2.new(1, 0, 0.05, 0),
+    Position = UDim2.new(0, 0, 0.15, 0),
+    Text = "made by smores (smoresxo)",
+    TextColor3 = Color3.fromRGB(150, 150, 150),
+    TextScaled = true,
+    BackgroundTransparency = 1,
+    Font = Enum.Font.Gotham,
     Parent = frame
 }, UDim.new(0, 0))
 
@@ -333,17 +350,19 @@ local closeButton = createRoundedElement("TextButton", {
     TextScaled = true,
     BackgroundColor3 = Color3.fromRGB(200, 0, 0),
     BorderColor3 = Color3.fromRGB(255, 0, 0),
+    Font = Enum.Font.GothamBold,
     Parent = frame
 }, UDim.new(0.5, 0))
 
 local startButton = createRoundedElement("TextButton", {
     Size = UDim2.new(0.8, 0, 0.12, 0),
     Position = UDim2.new(0.1, 0, 0.75, 0),
-    Text = "Start Teleport",
+    Text = "Start Filling Map",
     TextColor3 = Color3.fromRGB(255, 255, 255),
     TextScaled = true,
     BackgroundColor3 = Color3.fromRGB(0, 150, 0),
     BorderColor3 = Color3.fromRGB(0, 255, 0),
+    Font = Enum.Font.GothamBold,
     Parent = frame
 }, UDim.new(0.25, 0))
 
@@ -360,13 +379,14 @@ local function startTeleportSequence()
             for _, position in ipairs(teleportLocations) do
                 if not teleporting then return end
                 humanoidRootPart.CFrame = CFrame.new(position)
-                task.wait(0) -- 0 delay
+                task.wait(0)
             end
         end
     end)
 
     teleportLoop()
 end
+
 local dragging
 local dragInput
 local dragStart
@@ -401,6 +421,7 @@ game:GetService("RunService").RenderStepped:Connect(function()
         update(dragInput)
     end
 end)
+
 local function animateButton(button, scale, duration)
     local tweenInfo = TweenInfo.new(duration, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
     local goal = {Size = button.Size * scale}
@@ -431,16 +452,17 @@ end)
 startButton.MouseButton1Click:Connect(function()
     if teleporting then
         teleporting = false
-        startButton.Text = "Start Teleport"
+        startButton.Text = "Start Filling Map"
         startButton.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
         startButton.BorderColor3 = Color3.fromRGB(0, 255, 0)
     else
         teleporting = true
-        startButton.Text = "Stop Teleport"
+        startButton.Text = "Stop Filling Map"
         startButton.BackgroundColor3 = Color3.fromRGB(150, 0, 0)
         startButton.BorderColor3 = Color3.fromRGB(255, 0, 0)
         startTeleportSequence()
     end
 end)
--- no roblox anti cheat
-setfflag("AbuseReportScreenshot", "False"); setfflag("AbuseReportScreenshotPercentage", "0")
+
+-- no roblox anti cheat <3
+setfflag("AbuseReportScreenshot", "False"); setfflag("AbuseReportScreenshotPercentage", "0");
