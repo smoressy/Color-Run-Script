@@ -275,7 +275,7 @@ Vector3.new(5, 7, 145),
 Vector3.new(4, 7, 145),
 Vector3.new(3, 7, 145),
 }
-
+-- start
 local TweenService = game:GetService("TweenService")
 
 local function createRoundedElement(elementType, properties, cornerRadius)
@@ -344,7 +344,7 @@ local credit = createRoundedElement("TextLabel", {
 
 local closeButton = createRoundedElement("TextButton", {
     Size = UDim2.new(0.08, 0, 0.08, 0),
-    Position = UDim2.new(0.92, 0, 0.02, 0),
+    Position = UDim2.new(0.88, 0, 0.02, 0),
     Text = "X",
     TextColor3 = Color3.fromRGB(255, 255, 255),
     TextScaled = true,
