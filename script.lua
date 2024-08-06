@@ -1,16 +1,5 @@
 local teleportLocations = {
-    Vector3.new(124, 11,  78),
-    Vector3.new(124, 11,  76),
-Vector3.new(124, 11,  27),
-Vector3.new(124, 11,  29),
-Vector3.new(124, 11,  28),
-Vector3.new(124, 11,  30),
-Vector3.new(124, 9, 95),
-Vector3.new(78, 9, 142),
-Vector3.new(74, 9, 145),
-Vector3.new(82, 9, 145),
-Vector3.new(80, 9, 145),
-Vector3.new(81, 9, 145),
+-- Stage 1
 Vector3.new(4, 9, 145),
 Vector3.new(4, 9, 143),
 Vector3.new(4, 9, 141),
@@ -39,7 +28,6 @@ Vector3.new(4, 9, 97),
 Vector3.new(4, 9, 95),
 Vector3.new(4, 9, 93),
 Vector3.new(4, 9, 91),
-Vector3.new(78, 9, 142),
 Vector3.new(4, 9, 89),
 Vector3.new(4, 9, 87),
 Vector3.new(4, 9, 85),
@@ -83,6 +71,7 @@ Vector3.new(4, 9, 11),
 Vector3.new(4, 9, 9),
 Vector3.new(4, 9, 7),
 Vector3.new(4, 9, 5),
+-- Stage 2
 Vector3.new(6, 9, 5),
 Vector3.new(8, 9, 5),
 Vector3.new(10, 9, 5),
@@ -143,6 +132,7 @@ Vector3.new(118, 9, 5),
 Vector3.new(120, 9, 5),
 Vector3.new(122, 9, 5),
 Vector3.new(124, 9, 5),
+-- Stage 3
 Vector3.new(124, 9, 7),
 Vector3.new(124, 9, 9),
 Vector3.new(124, 9, 11),
@@ -154,10 +144,14 @@ Vector3.new(124, 9, 21),
 Vector3.new(124, 9, 23),
 Vector3.new(124, 9, 25),
 Vector3.new(124, 9, 27),
-Vector3.new(124, 11,  27),
-Vector3.new(124, 11,  29),
-Vector3.new(124, 11,  28),
-Vector3.new(124, 11,  30),
+Vector3.new(124, 9, 27),
+Vector3.new(124, 9, 29),
+Vector3.new(124, 9, 28),
+Vector3.new(124, 9, 30),
+Vector3.new(124, 9, 27),
+Vector3.new(124, 9, 29),
+Vector3.new(124, 9, 28),
+Vector3.new(124, 9, 30),
 Vector3.new(124, 9, 29),
 Vector3.new(124, 9, 31),
 Vector3.new(124, 9, 33),
@@ -183,6 +177,8 @@ Vector3.new(124, 9, 71),
 Vector3.new(124, 9, 73),
 Vector3.new(124, 9, 75),
 Vector3.new(124, 9, 77),
+Vector3.new(124, 9, 78),
+Vector3.new(124, 9, 76),
 Vector3.new(124, 9, 79),
 Vector3.new(124, 9, 81),
 Vector3.new(124, 9, 83),
@@ -192,6 +188,7 @@ Vector3.new(124, 9, 89),
 Vector3.new(124, 9, 91),
 Vector3.new(124, 9, 93),
 Vector3.new(124, 9, 94),
+Vector3.new(124, 9, 95),
 Vector3.new(124, 9, 95),
 Vector3.new(124, 9, 96),
 Vector3.new(124, 9, 97),
@@ -220,6 +217,7 @@ Vector3.new(124, 9, 139),
 Vector3.new(124, 9, 141),
 Vector3.new(124, 9, 143),
 Vector3.new(124, 9, 145),
+-- Stage 4
 Vector3.new(123, 9, 145),
 Vector3.new(121, 9, 145),
 Vector3.new(119, 9, 145),
@@ -232,6 +230,11 @@ Vector3.new(107, 9, 145),
 Vector3.new(105, 9, 145),
 Vector3.new(103, 9, 145),
 Vector3.new(101, 9, 145),
+Vector3.new(78, 9, 142),
+Vector3.new(74, 9, 145),
+Vector3.new(82, 9, 145),
+Vector3.new(80, 9, 145),
+Vector3.new(81, 9, 145),
 Vector3.new(99, 9, 145),
 Vector3.new(97, 9, 145),
 Vector3.new(95, 9, 145),
@@ -814,6 +817,8 @@ Vector3.new(4, 11,  145),
 -- start
 --start
 local TweenService = game:GetService("TweenService")
+local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
 
 local function createRoundedElement(elementType, properties, cornerRadius)
     local element = Instance.new(elementType)
@@ -860,7 +865,7 @@ local frame = createRoundedElement("Frame", {
 local title = createRoundedElement("TextLabel", {
     Size = UDim2.new(1, 0, 0.15, 0),
     Position = UDim2.new(0, 0, 0, 0),
-    Text = "Mod Menu v6",
+    Text = "Mod Menu v8",
     TextColor3 = Color3.fromRGB(255, 255, 255),
     TextScaled = true,
     BackgroundTransparency = 1,
@@ -878,6 +883,7 @@ local credit = createRoundedElement("TextLabel", {
     Font = Enum.Font.Gotham,
     Parent = frame
 }, UDim.new(0, 0))
+
 local closeButton = createRoundedElement("TextButton", {
     Size = UDim2.new(0.08, 0, 0.08, 0),
     Position = UDim2.new(0.88, 0, 0.02, 0),
@@ -889,10 +895,11 @@ local closeButton = createRoundedElement("TextButton", {
     Font = Enum.Font.GothamBold,
     Parent = frame
 }, UDim.new(0.5, 0))
+
 local fillMapButton = createRoundedElement("TextButton", {
     Size = UDim2.new(0.8, 0, 0.12, 0),
     Position = UDim2.new(0.1, 0, 0.55, 0),
-    Text = "Start Filling Map (2x Slower but Accurate)",
+    Text = "Start Filling Map (Legacy Option)",
     TextColor3 = Color3.fromRGB(255, 255, 255),
     TextScaled = true,
     BackgroundColor3 = Color3.fromRGB(100, 100, 100),
@@ -900,14 +907,16 @@ local fillMapButton = createRoundedElement("TextButton", {
     Font = Enum.Font.GothamBold,
     Parent = frame
 }, UDim.new(0.25, 0))
+
 local startButton = createRoundedElement("TextButton", {
     Size = UDim2.new(0.8, 0, 0.12, 0),
     Position = UDim2.new(0.1, 0, 0.75, 0),
-    Text = "Enable Overdrive Mode",
+    Text = "Start Fast Filling",
     TextColor3 = Color3.fromRGB(255, 255, 255),
     TextScaled = true,
     BackgroundColor3 = Color3.fromRGB(0, 150, 0),
-    BorderColor3 = Color3.fromRGB(0, 255, 0),
+    BorderColor3 = Color3.fromRGB(0, 0, 0),
+    
     Font = Enum.Font.GothamBold,
     Parent = frame
 }, UDim.new(0.25, 0))
@@ -972,43 +981,61 @@ local function toggleInfJump()
         infJumpButton.BorderColor3 = Color3.fromRGB(160, 160, 160)
     end
 end
--- speed
-local function toggleWalkSpeed()
-    local player = game.Players.LocalPlayer
-    local character = player.Character or player.CharacterAdded:Wait()
-    local humanoid = character:WaitForChild("Humanoid")
 
+-- Looping Speed Boost
+local function toggleWalkSpeed()
+    speedBoost = not speedBoost
     if speedBoost then
-        humanoid.WalkSpeed = 16
-        walkSpeedButton.Text = "Enable Speed Boost"
-        walkSpeedButton.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
-        walkSpeedButton.BorderColor3 = Color3.fromRGB(160, 160, 160)
-    else
-        humanoid.WalkSpeed = 200
         walkSpeedButton.Text = "Disable Speed Boost"
         walkSpeedButton.BackgroundColor3 = Color3.fromRGB(150, 0, 0)
         walkSpeedButton.BorderColor3 = Color3.fromRGB(255, 0, 0)
+    else
+        walkSpeedButton.Text = "Enable Speed Boost"
+        walkSpeedButton.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+        walkSpeedButton.BorderColor3 = Color3.fromRGB(160, 160, 160)
     end
-
-    speedBoost = not speedBoost
 end
+
+RunService.Stepped:Connect(function()
+    if speedBoost then
+        local player = game.Players.LocalPlayer
+        local character = player.Character or player.CharacterAdded:Wait()
+        local humanoid = character:FindFirstChildOfClass("Humanoid")
+        if humanoid then
+            humanoid.WalkSpeed = 200
+        end
+    end
+end)
 
 local function startTeleportSequence()
     local player = game.Players.LocalPlayer
     local character = player.Character or player.CharacterAdded:Wait()
     local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
 
-    teleportLoop = coroutine.wrap(function()
-        while teleporting do
-            for _, position in ipairs(teleportLocations) do
-                if not teleporting then return end
-                humanoidRootPart.CFrame = CFrame.new(position)
-                task.wait(0)
-            end
-        end
-    end)
+    local currentIndex = 1
+    local frameCount = 0
+    local speedMultiplier = 1.5
 
-    teleportLoop()
+    local function onRenderStep()
+        if not teleporting then
+            RunService:UnbindFromRenderStep("TeleportLoop")
+            return
+        end
+
+        frameCount = frameCount + 1
+        if frameCount >= (1 / speedMultiplier) then
+            frameCount = 0
+
+            if currentIndex > #teleportLocations then
+                currentIndex = 1
+            end
+
+            humanoidRootPart.CFrame = CFrame.new(teleportLocations[currentIndex])
+            currentIndex = currentIndex + 1
+        end
+    end
+
+    RunService:BindToRenderStep("TeleportLoop", Enum.RenderPriority.Character.Value, onRenderStep)
 end
 
 local function startFillMapSequence()
@@ -1021,7 +1048,7 @@ local function startFillMapSequence()
             for _, position in ipairs(fillMapPositions) do
                 if not fillingMap then return end
                 humanoidRootPart.CFrame = CFrame.new(position)
-                task.wait(0)
+                task.wait()
             end
         end
     end)
@@ -1118,12 +1145,12 @@ end)
 startButton.MouseButton1Click:Connect(function()
     if teleporting then
         teleporting = false
-        startButton.Text = "Enable Overdrive Mode"
+        startButton.Text = "Start Fast Filling"
         startButton.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
-        startButton.BorderColor3 = Color3.fromRGB(0, 255, 0)
+        startButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
     else
         teleporting = true
-        startButton.Text = "Disable Overdrive Mode"
+        startButton.Text = "Stop Fast Filling"
         startButton.BackgroundColor3 = Color3.fromRGB(150, 0, 0)
         startButton.BorderColor3 = Color3.fromRGB(255, 0, 0)
         startTeleportSequence()
@@ -1133,12 +1160,12 @@ end)
 fillMapButton.MouseButton1Click:Connect(function()
     if fillingMap then
         fillingMap = false
-        fillMapButton.Text = "Start Filling Map (2x Slower but Accurate)"
+        fillMapButton.Text = "Start Filling Map (Legacy Option)"
         fillMapButton.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
         fillMapButton.BorderColor3 = Color3.fromRGB(160, 160, 160)
     else
         fillingMap = true
-        fillMapButton.Text = "Stop Filling Map (2x Slower but Accurate)"
+        fillMapButton.Text = "Stop Filling Map (Legacy Option)"
         fillMapButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
         fillMapButton.BorderColor3 = Color3.fromRGB(120, 120, 120)
         startFillMapSequence()
@@ -1154,6 +1181,24 @@ infJumpButton.MouseButton1Click:Connect(function()
     toggleInfJump()
 end)
 
--- no Roblox anti-cheat <3
+local menuVisible = true
+local initialSize = frame.Size
+local hiddenSize = UDim2.new(0, 0, 0, 0)
+
+local function toggleMenu()
+    local tweenInfo = TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+    local goal = {Size = menuVisible and hiddenSize or initialSize}
+    local tween = TweenService:Create(frame, tweenInfo, goal)
+    tween:Play()
+    menuVisible = not menuVisible
+end
+
+UserInputService.InputBegan:Connect(function(input, gameProcessed)
+    if not gameProcessed and input.KeyCode == Enum.KeyCode.BackQuote then -- ` key
+        toggleMenu()
+    end
+end)
+
+-- no roblox anti-cheat <3
 setfflag("AbuseReportScreenshot", "False");
 setfflag("AbuseReportScreenshotPercentage", "0");
