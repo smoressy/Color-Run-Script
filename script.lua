@@ -865,7 +865,7 @@ local frame = createRoundedElement("Frame", {
 local title = createRoundedElement("TextLabel", {
     Size = UDim2.new(1, 0, 0.15, 0),
     Position = UDim2.new(0, 0, 0, 0),
-    Text = "Mod Menu v8",
+    Text = "Mod Menu v9",
     TextColor3 = Color3.fromRGB(255, 255, 255),
     TextScaled = true,
     BackgroundTransparency = 1,
@@ -973,22 +973,20 @@ local function toggleInfJump()
 
     if infJump then
         infJumpButton.Text = "Disable Inf Jump"
-        infJumpButton.BackgroundColor3 = Color3.fromRGB(150, 0, 0)
-        infJumpButton.BorderColor3 = Color3.fromRGB(255, 0, 0)
+        infJumpButton.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+        infJumpButton.BorderColor3 = Color3.fromRGB(160, 160, 160)
     else
         infJumpButton.Text = "Enable Inf Jump"
         infJumpButton.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
         infJumpButton.BorderColor3 = Color3.fromRGB(160, 160, 160)
     end
 end
-
--- Looping Speed Boost
 local function toggleWalkSpeed()
     speedBoost = not speedBoost
     if speedBoost then
         walkSpeedButton.Text = "Disable Speed Boost"
-        walkSpeedButton.BackgroundColor3 = Color3.fromRGB(150, 0, 0)
-        walkSpeedButton.BorderColor3 = Color3.fromRGB(255, 0, 0)
+        walkSpeedButton.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+        walkSpeedButton.BorderColor3 = Color3.fromRGB(160, 160, 160)
     else
         walkSpeedButton.Text = "Enable Speed Boost"
         walkSpeedButton.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
@@ -1014,7 +1012,7 @@ local function startTeleportSequence()
 
     local currentIndex = 1
     local frameCount = 0
-    local speedMultiplier = 1.5
+    local speedMultiplier = 60
 
     local function onRenderStep()
         if not teleporting then
