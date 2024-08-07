@@ -1,101 +1,134 @@
-local ScreenGui = Instance.new("ScreenGui")
-local Frame = Instance.new("Frame")
-local TitleBar = Instance.new("Frame")
-local CloseButton = Instance.new("TextButton")
-local MinimizeButton = Instance.new("TextButton")
-local Button = Instance.new("TextButton")
-local TitleLabel = Instance.new("TextLabel")
+local TweenService = game:GetService("TweenService")
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local UIS = game:GetService("UserInputService")
+local RunService = game:GetService("RunService")
 
-ScreenGui.Name = "DarkModePanel"
-ScreenGui.Parent = game.CoreGui
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "ModMenu"
+screenGui.Parent = game.CoreGui
 
-Frame.Parent = ScreenGui
-Frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-Frame.Position = UDim2.new(0.5, -150, 0.5, -75)
-Frame.Size = UDim2.new(0, 300, 0, 150)
-Frame.BorderSizePixel = 0
-Frame.Visible = false
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0, 300, 0, 400)
+frame.Position = UDim2.new(0.5, -150, 0.5, -200)
+frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+frame.BorderSizePixel = 0
+frame.Parent = screenGui
 
-TitleBar.Parent = ScreenGui
-TitleBar.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
-TitleBar.Position = Frame.Position
-TitleBar.Size = UDim2.new(0, 300, 0, 30)
-TitleBar.BorderSizePixel = 0
-TitleBar.Active = true
-TitleBar.Draggable = true
+local closeButton = Instance.new("TextButton")
+closeButton.Size = UDim2.new(0, 30, 0, 30)
+closeButton.Position = UDim2.new(1, -35, 0, 5)
+closeButton.Text = "X"
+closeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+closeButton.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
+closeButton.BorderSizePixel = 0
+closeButton.Parent = frame
 
-TitleLabel.Parent = TitleBar
-TitleLabel.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
-TitleLabel.Size = UDim2.new(1, 0, 1, 0)
-TitleLabel.Text = "Dark Mode Panel"
-TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-TitleLabel.TextSize = 14
+closeButton.MouseButton1Click:Connect(function()
+    screenGui:Destroy()
+end)
 
-CloseButton.Parent = TitleBar
-CloseButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-CloseButton.Position = UDim2.new(1, -30, 0, 0)
-CloseButton.Size = UDim2.new(0, 30, 0, 30)
-CloseButton.Text = "X"
-CloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-CloseButton.TextSize = 14
+local startLoopButton = Instance.new("TextButton")
+startLoopButton.Size = UDim2.new(0, 200, 0, 50)
+startLoopButton.Position = UDim2.new(0.5, -100, 0.2, 0)
+startLoopButton.Text = "Start Loop"
+startLoopButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+startLoopButton.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
+startLoopButton.BorderSizePixel = 0
+startLoopButton.Parent = frame
 
-MinimizeButton.Parent = TitleBar
-MinimizeButton.BackgroundColor3 = Color3.fromRGB(255, 255, 0)
-MinimizeButton.Position = UDim2.new(1, -60, 0, 0)
-MinimizeButton.Size = UDim2.new(0, 30, 0, 30)
-MinimizeButton.Text = "-"
-MinimizeButton.TextColor3 = Color3.fromRGB(0, 0, 0)
-MinimizeButton.TextSize = 14
+local stopButton = Instance.new("TextButton")
+stopButton.Size = UDim2.new(0, 200, 0, 50)
+stopButton.Position = UDim2.new(0.5, -100, 0.4, 0)
+stopButton.Text = "Stop Loops"
+stopButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+stopButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+stopButton.BorderSizePixel = 0
+stopButton.Parent = frame
 
-Button.Parent = Frame
-Button.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-Button.Position = UDim2.new(0.25, 0, 0.5, -25)
-Button.Size = UDim2.new(0.5, 0, 0.5, 0)
-Button.Text = "Start"
-Button.TextColor3 = Color3.fromRGB(255, 255, 255)
+local dragging = false
+local dragInput, mousePos, framePos
 
-local running = false
-local teleportLoop
+frame.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        dragging = true
+        mousePos = input.Position
+        framePos = frame.Position
 
-local function startTeleporting()
-    running = true
-    Button.Text = "Stop"
-    
-    teleportLoop = coroutine.create(function()
-        while running do
-            local players = game.Players:GetPlayers()
-            local randomPlayer = players[math.random(1, #players)]
-            if randomPlayer and randomPlayer.Character then
-                game.Players.LocalPlayer.Character:SetPrimaryPartCFrame(randomPlayer.Character.PrimaryPart.CFrame)
+        input.Changed:Connect(function()
+            if input.UserInputState == Enum.UserInputState.End then
+                dragging = false
             end
-            task.wait()
-        end
-    end)
-    
-    coroutine.resume(teleportLoop)
-end
-
-local function stopTeleporting()
-    running = false
-    Button.Text = "Start"
-end
-
-Button.MouseButton1Click:Connect(function()
-    if running then
-        stopTeleporting()
-    else
-        startTeleporting()
+        end)
     end
 end)
 
-CloseButton.MouseButton1Click:Connect(function()
-    ScreenGui:Destroy()
+frame.InputChanged:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseMovement then
+        dragInput = input
+    end
 end)
 
-MinimizeButton.MouseButton1Click:Connect(function()
-    Frame.Visible = not Frame.Visible
+UIS.InputChanged:Connect(function(input)
+    if input == dragInput and dragging then
+        local delta = input.Position - mousePos
+        frame.Position = UDim2.new(
+            framePos.X.Scale,
+            framePos.X.Offset + delta.X,
+            framePos.Y.Scale,
+            framePos.Y.Offset + delta.Y
+        )
+    end
 end)
 
-TitleBar:GetPropertyChangedSignal("Position"):Connect(function()
-    Frame.Position = TitleBar.Position + UDim2.new(0, 0, 0, 30)
+-- Loop Management
+local loops = {}
+local loopIndex = 0
+
+local function startTeleportLoop()
+    loopIndex = loopIndex + 1
+    local currentIndex = loopIndex
+    local loopActive = true
+    table.insert(loops, {index = currentIndex, active = loopActive})
+
+    local function teleport()
+        while loopActive do
+            local players = Players:GetPlayers()
+            if #players > 1 then
+                local randomPlayer = players[math.random(1, #players)]
+                if randomPlayer ~= LocalPlayer and randomPlayer.Character and randomPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                    LocalPlayer.Character.HumanoidRootPart.CFrame = randomPlayer.Character.HumanoidRootPart.CFrame
+                end
+            end
+            wait(1)  -- Teleport interval
+        end
+    end
+
+    coroutine.wrap(teleport)()
+end
+
+local function stopAllLoops()
+    for _, loop in pairs(loops) do
+        loop.active = false
+    end
+    loops = {}
+end
+startLoopButton.MouseButton1Click:Connect(startTeleportLoop)
+stopButton.MouseButton1Click:Connect(stopAllLoops)
+local tweenInfo = TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+
+local function animateButton(button)
+    local tween = TweenService:Create(button, tweenInfo, {BackgroundColor3 = Color3.fromRGB(0, 200, 255)})
+    tween:Play()
+    tween.Completed:Connect(function()
+        button.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
+    end)
+end
+
+startLoopButton.MouseEnter:Connect(function()
+    animateButton(startLoopButton)
+end)
+
+stopButton.MouseEnter:Connect(function()
+    animateButton(stopButton)
 end)
