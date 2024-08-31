@@ -62,7 +62,7 @@ end)
 local usernameInput = Instance.new("TextBox")
 usernameInput.Size = UDim2.new(0, 360, 0, 35)
 usernameInput.Position = UDim2.new(0, 30, 0, 50)
-usernameInput.PlaceholderText = "Enter Username (type 3+ letters)"
+usernameInput.PlaceholderText = "Enter Username"
 usernameInput.Text = ""
 usernameInput.TextColor3 = Color3.fromRGB(255, 255, 255)
 usernameInput.BackgroundColor3 = Color3.fromRGB(50, 50, 55)
