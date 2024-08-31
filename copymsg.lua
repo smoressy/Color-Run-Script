@@ -1,3 +1,4 @@
+-- Create and configure the main ScreenGui
 local screenGui = Instance.new("ScreenGui")
 screenGui.Name = "ChatLogger"
 screenGui.Parent = game.CoreGui
@@ -41,7 +42,7 @@ titleLabel.Parent = titleBar
 -- Close Button
 local closeButton = Instance.new("TextButton")
 closeButton.Size = UDim2.new(0, 30, 0, 30)
-closeButton.Position = UDim2.new(1, -32323233235, 0, 0)
+closeButton.Position = UDim2.new(1, -35, 0, 0)  -- Fixed button position
 closeButton.Text = "✕"
 closeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 closeButton.BackgroundColor3 = Color3.fromRGB(230, 70, 70)
@@ -54,6 +55,7 @@ local closeButtonCorner = Instance.new("UICorner")
 closeButtonCorner.CornerRadius = UDim.new(0, 8)
 closeButtonCorner.Parent = closeButton
 
+-- Close functionality
 closeButton.MouseButton1Click:Connect(function()
     screenGui:Destroy()
 end)
@@ -69,6 +71,7 @@ usernameInput.BackgroundColor3 = Color3.fromRGB(50, 50, 55)
 usernameInput.BorderSizePixel = 0
 usernameInput.Font = Enum.Font.Gotham
 usernameInput.TextSize = 16
+usernameInput.ClearTextOnFocus = false
 usernameInput.Parent = mainFrame
 
 local usernameInputCorner = Instance.new("UICorner")
@@ -107,14 +110,15 @@ shadow.Parent = mainFrame
 -- Message storage
 local latestMessages = {}
 
+-- Update autocomplete functionality
 local function updateAutoComplete()
-    while true do
-        task.wait()
+    while task.wait(0.1) do  -- Slight delay to prevent excessive processing
         local inputText = usernameInput.Text:lower()
         if #inputText >= 3 then
             for _, player in ipairs(game.Players:GetPlayers()) do
                 if player.Name:lower():sub(1, #inputText) == inputText then
                     usernameInput.Text = player.Name
+                    usernameInput.CursorPosition = #player.Name + 1
                     break
                 end
             end
@@ -124,33 +128,38 @@ end
 
 spawn(updateAutoComplete)
 
+-- Copy button functionality
 copyButton.MouseButton1Click:Connect(function()
     local playerName = usernameInput.Text
-    if latestMessages[playerName] then
-        setclipboard(latestMessages[playerName])
+    local message = latestMessages[playerName]
+    if message then
+        setclipboard(message)
         print("Copied latest message from " .. playerName)
     else
         print("No message found for " .. playerName)
     end
 end)
 
+-- Chat event handler
 local function onPlayerChatted(player, message)
     latestMessages[player.Name] = message
 end
 
+-- Connect chat events for all players
 for _, player in ipairs(game.Players:GetPlayers()) do
     player.Chatted:Connect(function(message)
         onPlayerChatted(player, message)
     end)
 end
 
+-- Handle new players joining
 game.Players.PlayerAdded:Connect(function(player)
     player.Chatted:Connect(function(message)
         onPlayerChatted(player, message)
     end)
 end)
 
--- Dragging functionality
+-- Dragging functionality for the main frame
 local dragging, dragInput, dragStart, startPos
 
 local function update(input)
